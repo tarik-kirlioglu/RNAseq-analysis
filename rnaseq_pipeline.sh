@@ -9,7 +9,7 @@ trim="/mnt/c/users/honor/desktop/rnaseq_pipeline/trim"
 
 echo "STEP 1:Prefetch SRA Data"
 
-prefetch -O ${reads}/ SRR12439141 SRR12439142 SRR12439143 SRR12439144 SRR12439145 SRR12439146
+prefetch -O ${reads}/ SRR12439141 SRR12439142  SRR12439144 SRR12439145 
 
 echo "STEP 2:Fasterq-dump SRA Data"
 
@@ -64,15 +64,6 @@ STAR --genomeDir ${ref}/ \
 
 STAR --genomeDir ${ref}/ \
 	--runThreadN 2 \
-	--readFilesIn ${reads}/SRR12439143_1.fastq ${reads}/SRR12439143_2.fastq \
-	--outFileNamePrefix ${mapStar}/SRR12439143 \ 
-	--outSAMtype BAM SortedByCoordinate \
-	--outSAMunmapped Within \
-	--quantMode GeneCounts \
-	--outSAMattributes Standard
-
-STAR --genomeDir ${ref}/ \
-	--runThreadN 2 \
 	--readFilesIn ${reads}/SRR12439144_1.fastq ${reads}/SRR12439144_2.fastq \
 	--outFileNamePrefix ${mapStar}/SRR12439144 \ 
 	--outSAMtype BAM SortedByCoordinate \
@@ -84,15 +75,6 @@ STAR --genomeDir ${ref}/ \
 	--runThreadN 2 \
 	--readFilesIn ${reads}/SRR12439145_1.fastq ${reads}/SRR12439145_2.fastq \
 	--outFileNamePrefix ${mapStar}/SRR12439145 \ 
-	--outSAMtype BAM SortedByCoordinate \
-	--outSAMunmapped Within \
-	--quantMode GeneCounts \
-	--outSAMattributes Standard
-
-STAR --genomeDir ${ref}/ \
-	--runThreadN 2 \
-	--readFilesIn ${reads}/SRR12439146_1.fastq ${reads}/SRR12439146_2.fastq \
-	--outFileNamePrefix ${mapStar}/SRR12439146 \ 
 	--outSAMtype BAM SortedByCoordinate \
 	--outSAMunmapped Within \
 	--quantMode GeneCounts \
