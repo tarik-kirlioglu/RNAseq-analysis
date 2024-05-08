@@ -16,11 +16,9 @@ echo "Step2:Extract fastq Files"
 
 fasterq-dump ${reads}*.sra -O ${reads}
 
-
 echo "Step3:FastQC"
 
 fastqc ${reads}*.fastq -o ${fastqc}
-
 
 echo "Step4:Trimming"
 
@@ -35,7 +33,6 @@ do
                 ILLUMINACLIP:/mnt/c/users/honor/desktop/software/Trimmomatic/adapters/TruSeq3-PE-2.fa:2:30:10 
 
 done
-
 
 #moving trimmed files
 
@@ -54,10 +51,7 @@ STAR --runMode genomeGenerate \
 	 --sjdbGTFfile Caenorhabditis_elegans.WBcel235.111.gtf \
 	 --runThreadN 2
 
-
-
 echo "Step6:STAR Mapping"
-
 
 for infile in ${trimmed}*_1.trim.fastq
 do
@@ -72,6 +66,7 @@ do
 done
 
 fi
+echo "Step6:Calculating counts with featureCounts"
 
 featureCounts -a Caenorhabditis_elegans.WBcel235.111.gtf  -o count.out -T 2 -p  ${mapped}*.bam
 
