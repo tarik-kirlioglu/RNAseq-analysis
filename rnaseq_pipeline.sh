@@ -1,88 +1,77 @@
 #!/bin/bash
 
-ref="/mnt/c/users/honor/desktop/rnaseq_pipeline/ref"
-reads="/mnt/c/users/honor/desktop/rnaseq_pipeline/reads"
-results="/mnt/c/users/honor/desktop/rnaseq_pipeline/results"
-quality="/mnt/c/users/honor/desktop/rnaseq_pipeline/fastqc"
-mapStar="/mnt/c/users/honor/desktop/rnaseq_pipeline/mapStar"
-trim="/mnt/c/users/honor/desktop/rnaseq_pipeline/trim"
+counts="/mnt/c/users/honor/desktop/c_elegans/counts/"
+fastqc="/mnt/c/users/honor/desktop/c_elegans/fastqc/"
+genome_index="/mnt/c/users/honor/desktop/c_elegans/genome_index/"
+mapped="/mnt/c/users/honor/desktop/c_elegans/mapped/"
+reads="/mnt/c/users/honor/desktop/c_elegans/reads/"
+trimmed="/mnt/c/users/honor/desktop/c_elegans/trimmed/"
 
-echo "STEP 1:Prefetch SRA Data"
-
-prefetch -O ${reads}/ SRR12439141 SRR12439142  SRR12439144 SRR12439145 
-
-echo "STEP 2:Fasterq-dump SRA Data"
-
-fasterq-dump ${reads}/*.sra -O ${reads}/
-
-echo "STEP 3:FastQC"
-
-fastqc ${reads}/*.fastq -o ${quality}/
-
-# NOTE: If fastqc gives bad results then it must be trimming 
-echo "STEP 4:Trimmomatic"
-
-java -jar /mnt/c/users/honor/desktop/software/Trimmomatic/dist/jar/trimmomatic-0.40-rc1.jar PE \
-	${reads}/SRR12439141_1.fastq \
-	${reads}/SRR12439141_2.fastq \
-	${trim}/SRR12439141_1P.fastq ${trim}/SRR12439141_1U.fastq \
-	${trim}/SRR12439141_2P.fastq ${trim}/SRR12439141_2U.fastq \
-	ILLUMINACLIP:/mnt/c/users/honor/desktop/software/Trimmomatic/adapters/TruSeq3-PE-2.fa:2:30:10 \
-	LEADING:3 TRAILING:3 MINLEN:36
-
+echo "Step1:Prefetch SRA Data"
 if false 
 then
-	
-echo "STEP 5:STAR Genome Index"
+prefetch -O ${reads} SRR6822884 SRR6822885
+
+echo "Step2:Extract fastq Files"
+
+fasterq-dump ${reads}*.sra -O ${reads}
+
+
+echo "Step3:FastQC"
+
+fastqc ${reads}*.fastq -o ${fastqc}
+
+
+echo "Step4:Trimming"
+
+for infile in ${reads}*_1.fastq
+do
+	base=$(basename ${infile} _1.fastq)
+	java -jar /mnt/c/users/honor/desktop/software/Trimmomatic/dist/jar/trimmomatic-0.40-rc1.jar PE \
+				${infile} ${reads}${base}_2.fastq \
+                ${base}_1.trim.fastq ${base}_1.untrim.fastq \
+                ${base}_2.trim.fastq ${base}_2.untrim.fastq \
+                SLIDINGWINDOW:4:20 MINLEN:25 \
+                ILLUMINACLIP:/mnt/c/users/honor/desktop/software/Trimmomatic/adapters/TruSeq3-PE-2.fa:2:30:10 
+
+done
+
+
+#moving trimmed files
+
+mv *.trim.* ${trimmed}
+
+#downloading gtf and genom fasta files
+
+wget https://ftp.ensembl.org/pub/release-111/fasta/caenorhabditis_elegans/dna/Caenorhabditis_elegans.WBcel235.dna.toplevel.fa.gz
+wget https://ftp.ensembl.org/pub/release-111/gtf/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.111.gtf.gz
+
+echo "Step5:STAR Genome Index"
 
 STAR --runMode genomeGenerate \
-	--genomeDir ${ref}/ \
-	--genomeFastaFiles ${ref}/Pvulgaris_442_v2.1.softmasked.fa \
-	--sjdbGTFfile ${ref}/Pvulgaris_442_v2.1.gene_exons.gtf \
-	--runThreadN 2 \
-	--genomeSAindexNbases 12
+	 --genomeDir ${genome_index} \
+	 --genomeFastaFiles Caenorhabditis_elegans.WBcel235.dna.toplevel.fa \
+	 --sjdbGTFfile Caenorhabditis_elegans.WBcel235.111.gtf \
+	 --runThreadN 2
 
-echo "STEP 5:STAR Alignment"
 
-STAR --genomeDir ${ref}/ \
+
+echo "Step6:STAR Mapping"
+
+
+for infile in ${trimmed}*_1.trim.fastq
+do
+   base=$(basename ${infile} _1.trim.fastq)
+   STAR --genomeDir ${genome_index} \
 	--runThreadN 2 \
-	--readFilesIn ${reads}/SRR12439141_1.fastq ${reads}/SRR12439141_2.fastq \
-	--outFileNamePrefix ${mapStar}/SRR12439141 \ 
+	--readFilesIn ${infile} ${trimmed}${base}_2.trim.fastq \
+	--outFileNamePrefix ${mapped}${base} \
 	--outSAMtype BAM SortedByCoordinate \
-	--outSAMunmapped Within \
 	--quantMode GeneCounts \
 	--outSAMattributes Standard
-
-STAR --genomeDir ${ref}/ \
-	--runThreadN 2 \
-	--readFilesIn ${reads}/SRR12439142_1.fastq ${reads}/SRR12439142_2.fastq \
-	--outFileNamePrefix ${mapStar}/SRR12439142 \ 
-	--outSAMtype BAM SortedByCoordinate \
-	--outSAMunmapped Within \
-	--quantMode GeneCounts \
-	--outSAMattributes Standard
-
-STAR --genomeDir ${ref}/ \
-	--runThreadN 2 \
-	--readFilesIn ${reads}/SRR12439144_1.fastq ${reads}/SRR12439144_2.fastq \
-	--outFileNamePrefix ${mapStar}/SRR12439144 \ 
-	--outSAMtype BAM SortedByCoordinate \
-	--outSAMunmapped Within \
-	--quantMode GeneCounts \
-	--outSAMattributes Standard
-
-STAR --genomeDir ${ref}/ \
-	--runThreadN 2 \
-	--readFilesIn ${reads}/SRR12439145_1.fastq ${reads}/SRR12439145_2.fastq \
-	--outFileNamePrefix ${mapStar}/SRR12439145 \ 
-	--outSAMtype BAM SortedByCoordinate \
-	--outSAMunmapped Within \
-	--quantMode GeneCounts \
-	--outSAMattributes Standard
-
-echo "STEP 6: featureCounts"
-
-featureCounts -a ${ref}/Pvulgaris_442_v2.1.gene_exons.gtf -o ${results}/count.out -T 2 -p  ${mapStar}/*.bam
+done
 
 fi
+
+featureCounts -a Caenorhabditis_elegans.WBcel235.111.gtf  -o count.out -T 2 -p  ${mapped}*.bam
 
