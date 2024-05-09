@@ -10,7 +10,7 @@ trimmed="/mnt/c/users/honor/desktop/c_elegans/trimmed/"
 echo "Step1:Prefetch SRA Data"
 if false 
 then
-prefetch -O ${reads} SRR6822884 SRR6822885
+prefetch -O ${reads} SRR6822884 SRR6822885 SRR6822886 SRR6822887
 
 echo "Step2:Extract fastq Files"
 
