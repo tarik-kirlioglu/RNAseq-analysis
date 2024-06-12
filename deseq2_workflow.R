@@ -11,10 +11,8 @@ counts_data <- read.csv("counts_data.csv",
                         sep =",",
                         row.names = 1)
 
-coldata <- read.csv("colData.csv",
-                    header = T,
-                    row.names = 1,
-                    sep =",")
+col_data <- data.frame(condition=c("control", "control", "treated", "treated"))
+rownames(col_data) <- colnames(counts)
 
 #check rownames equal colnames
 
