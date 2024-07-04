@@ -6,7 +6,7 @@ library(ggplot2)
 
 #STEP 2: load to datasets
 
-counts_data <- read.csv("counts_data.csv",
+counts_data <- read.csv("counts.csv",
                         header = T,
                         sep =",",
                         row.names = 1)
