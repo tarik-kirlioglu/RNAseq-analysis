@@ -48,8 +48,8 @@ res$symbol <- mapIds(org.Hs.eg.db,
 #pca plot
 vstdata <- vst(dds,
                blind = F)
-plotPCA(vstdata,
-        intgroup="condition")
+pca_graph <- plotPCA(vstdata,
+                      intgroup="condition")
 
 #plotMA
 plotMA(res, alpha=0.05)
