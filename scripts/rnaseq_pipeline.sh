@@ -1,16 +1,16 @@
 #!/bin/bash
 
-counts="/mnt/c/users/honor/desktop/c_elegans/counts/"
-fastqc="/mnt/c/users/honor/desktop/c_elegans/fastqc/"
-genome_index="/mnt/c/users/honor/desktop/c_elegans/genome_index/"
-mapped="/mnt/c/users/honor/desktop/c_elegans/mapped/"
-reads="/mnt/c/users/honor/desktop/c_elegans/reads/"
-trimmed="/mnt/c/users/honor/desktop/c_elegans/trimmed/"
+counts="/mnt/c/users/honor/desktop/homo_sapiens/counts/"
+fastqc="/mnt/c/users/honor/desktop/homo_sapiens/fastqc/"
+genome_index="/mnt/c/users/honor/desktop/homo_sapiens/genome_index/"
+mapped="/mnt/c/users/honor/desktop/homo_sapiens/mapped/"
+reads="/mnt/c/users/honor/desktop/homo_sapiens/reads/"
+trimmed="/mnt/c/users/honor/desktop/homo_sapiens/trimmed/"
 
 echo "Step1:Prefetch SRA Data"
 if false 
 then
-prefetch -O ${reads} SRR6822884 SRR6822885 SRR6822886 SRR6822887
+prefetch -O ${reads} PRJNA1040225
 
 echo "Step2:Extract fastq Files"
 
@@ -40,15 +40,15 @@ mv *.trim.* ${trimmed}
 
 #downloading gtf and genom fasta files
 
-wget https://ftp.ensembl.org/pub/release-111/fasta/caenorhabditis_elegans/dna/Caenorhabditis_elegans.WBcel235.dna.toplevel.fa.gz
-wget https://ftp.ensembl.org/pub/release-111/gtf/caenorhabditis_elegans/Caenorhabditis_elegans.WBcel235.111.gtf.gz
+wget https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+wget https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz
 
 echo "Step5:STAR Genome Index"
 
 STAR --runMode genomeGenerate \
 	 --genomeDir ${genome_index} \
-	 --genomeFastaFiles Caenorhabditis_elegans.WBcel235.dna.toplevel.fa \
-	 --sjdbGTFfile Caenorhabditis_elegans.WBcel235.111.gtf \
+	 --genomeFastaFiles Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+	 --sjdbGTFfile Homo_sapiens.GRCh38.112.gtf \
 	 --runThreadN 2
 
 echo "Step6:STAR Mapping"
@@ -68,4 +68,4 @@ done
 fi
 echo "Step6:Calculating counts with featureCounts"
 
-featureCounts -a Caenorhabditis_elegans.WBcel235.111.gtf  -o count.out -T 2 -p  ${mapped}*.bam
+featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o count.out -T 2 -p  ${mapped}*.bam
