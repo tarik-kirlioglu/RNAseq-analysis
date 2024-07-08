@@ -51,7 +51,7 @@ git clone https://github.com/tarik-kirlioglu/RNAseq-analysis.git
 cd RNAseq-analysis
 ```
 ## Analysis Workflow
-1. **Prefetch Datasets**: Using tools like sra-toolkit.
+1. **Prefetch Datasets**: Downloading datasets by sra-toolkit.
 2. **Trimming**: Trimming and cleaning sequencing reads with Trimmomatic
 3. **Quality Control**: Using tools like FastQC to ensure data quality.
 4. **Alignment**: Mapping reads to a reference genome using STAR.
