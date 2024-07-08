@@ -12,7 +12,7 @@ Ensure you have R installed along with the required packages:
 ```R
 install.packages(c("tidyverse", "ggplot2"))
 install.packages("BiocManager")
-BiocManager::install(c("DESeq2", "pheatmap", "EnhancedVolcano, "org.Hs.eg.db"))
+BiocManager::install(c("DESeq2", "pheatmap", "EnhancedVolcano", "org.Hs.eg.db"))
 ```
 ### FastQC
 FastQC is used for quality control of raw sequencing data. You can download and install FastQC from here.
