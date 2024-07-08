@@ -14,6 +14,36 @@ install.packages(c("tidyverse", "ggplot2"))
 install.packages("BiocManager")
 BiocManager::install(c("DESeq2", "pheatmap", "EnhancedVolcano, "org.Hs.eg.db"))
 ```
+### FastQC
+FastQC is used for quality control of raw sequencing data. You can download and install FastQC from here.
+
+```bash
+sudo apt-get install fastqc
+```
+### Trimmomatic
+Trimmomatic is used for trimming and cleaning sequencing reads. You can download Trimmomatic from here.
+```bash
+sudo apt-get install trimmomatic
+```
+### SRA Toolkit
+SRA Toolkit is used for accessing data from the NCBI Sequence Read Archive (SRA). You can download and install SRA Toolkit from here.
+
+```bash
+sudo apt-get install sra-toolkit
+```
+### STAR
+STAR is used for aligning RNAseq reads to a reference genome. You can download and install STAR from here.
+
+```bash
+git clone https://github.com/alexdobin/STAR.git
+cd STAR/source
+make
+```
+### featureCounts
+featureCounts is used for quantifying the number of reads mapped to genomic features. It is part of the Subread package, which can be downloaded and installed from here.
+```bash
+sudo apt-get install subread
+```
 ### Installation
 Clone the repository to your local machine:
 ```bash
@@ -21,10 +51,12 @@ git clone https://github.com/tarik-kirlioglu/RNAseq-analysis.git
 cd RNAseq-analysis
 ```
 ## Analysis Workflow
-1. **Quality Control**: Using tools like FastQC to ensure data quality.
-2. **Alignment**: Mapping reads to a reference genome using STAR.
-3. **Quantification**: Counting reads with featureCounts.
-4. **Statistical Analysis**: Analyzing gene expression with DESeq2.
+1. **Prefetch Datasets**: Using tools like sra-toolkit.
+2. **Trimming**: Trimming and cleaning sequencing reads with Trimmomatic
+3. **Quality Control**: Using tools like FastQC to ensure data quality.
+4. **Alignment**: Mapping reads to a reference genome using STAR.
+5. **Quantification**: Counting reads with featureCounts.
+6. **Statistical Analysis**: Analyzing gene expression with DESeq2.
 
 ### Contributions
 Contributions are welcome! Feel free to fork this repository and submit pull requests. For major changes, please open an issue first to discuss your proposed changes.
