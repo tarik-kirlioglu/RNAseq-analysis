@@ -8,12 +8,6 @@ RNA sequencing (RNAseq) is a powerful technique for profiling gene expression. T
 
 ## Getting Started
 ### Prerequisites
-Ensure you have R installed along with the required packages:
-```R
-install.packages(c("tidyverse", "ggplot2"))
-install.packages("BiocManager")
-BiocManager::install(c("DESeq2", "pheatmap", "EnhancedVolcano", "org.Hs.eg.db"))
-```
 ### FastQC
 FastQC is used for quality control of raw sequencing data. You can download and install FastQC from here.
 
@@ -43,6 +37,12 @@ make
 featureCounts is used for quantifying the number of reads mapped to genomic features. It is part of the Subread package, which can be downloaded and installed from here.
 ```bash
 sudo apt-get install subread
+```
+Ensure you have R installed along with the required packages:
+```R
+install.packages(c("tidyverse", "ggplot2"))
+install.packages("BiocManager")
+BiocManager::install(c("DESeq2", "pheatmap", "EnhancedVolcano", "org.Hs.eg.db"))
 ```
 ### Installation
 Clone the repository to your local machine:
