@@ -85,4 +85,4 @@ pheatmap(log2(top20_counts + 1))
 
 #save the results
 write.csv(res, "deseq_cell_density.csv")
-write.csv(normalized_counts, "normalize_counts.csv")
+write.csv(normalized_counts, "normalized_counts.csv")
