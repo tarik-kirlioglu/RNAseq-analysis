@@ -25,7 +25,7 @@ echo "Step4:MultiQC"
 
 multiqc ${fastqc}*_fastqc* -o ${multiqc}
 
-echo "Step4:Trimming"
+echo "Step5:Trimming"
 
 for infile in ${reads}*_1.fastq
 do
@@ -48,7 +48,7 @@ mv *.trim.* ${trimmed}
 wget https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 wget https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz
 
-echo "Step5:STAR Genome Index"
+echo "Step6:STAR Genome Index"
 
 STAR --runMode genomeGenerate \
 	 --genomeDir ${genome_index} \
@@ -56,7 +56,7 @@ STAR --runMode genomeGenerate \
 	 --sjdbGTFfile Homo_sapiens.GRCh38.112.gtf \
 	 --runThreadN 2
 
-echo "Step6:STAR Mapping"
+echo "Step7:STAR Mapping"
 
 for infile in ${trimmed}*_1.trim.fastq
 do
