@@ -16,7 +16,9 @@ sudo apt-get install fastqc
 ```
 ### MultiQC
 MultiQC aggregates its results into a single report.You can download Trimmomatic from here.
-
+```bash
+sudo apt-get install multiqc
+```
 ### Trimmomatic
 Trimmomatic is used for trimming and cleaning sequencing reads. You can download Trimmomatic from here.
 ```bash
