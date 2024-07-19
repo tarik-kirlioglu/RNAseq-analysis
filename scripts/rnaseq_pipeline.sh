@@ -71,6 +71,6 @@ do
 done
 
 fi
-echo "Step6:Calculating counts with featureCounts"
+echo "Step8:Calculating counts with featureCounts"
 
 featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o counts_celldensity.out -T 2 -p  ${mapped}*.bam
