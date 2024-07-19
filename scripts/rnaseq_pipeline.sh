@@ -6,6 +6,7 @@ genome_index="/mnt/c/users/honor/desktop/homo_sapiens/genome_index/"
 mapped="/mnt/c/users/honor/desktop/homo_sapiens/mapped/"
 reads="/mnt/c/users/honor/desktop/homo_sapiens/reads/"
 trimmed="/mnt/c/users/honor/desktop/homo_sapiens/trimmed/"
+multiqc="/mnt/c/users/honor/desktop/homo_sapiens/multiqc/"
 
 echo "Step1:Prefetch SRA Data"
 if false 
@@ -19,6 +20,10 @@ fasterq-dump ${reads}*.sra -O ${reads}
 echo "Step3:FastQC"
 
 fastqc ${reads}*.fastq -o ${fastqc}
+
+echo "Step4:MultiQC"
+
+multiqc ${fastqc}*_fastqc* -o ${multiqc}
 
 echo "Step4:Trimming"
 
