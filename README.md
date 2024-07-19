@@ -14,6 +14,9 @@ FastQC is used for quality control of raw sequencing data. You can download and 
 ```bash
 sudo apt-get install fastqc
 ```
+### MultiQC
+MultiQC aggregates its results into a single report.You can download Trimmomatic from here.
+
 ### Trimmomatic
 Trimmomatic is used for trimming and cleaning sequencing reads. You can download Trimmomatic from here.
 ```bash
