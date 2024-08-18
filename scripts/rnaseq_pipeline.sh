@@ -11,7 +11,7 @@ multiqc="/mnt/c/users/honor/desktop/homo_sapiens/multiqc/"
 echo "Step1:Prefetch SRA Data"
 if false 
 then
-prefetch -O ${reads} PRJNA1040225
+prefetch -O ${reads} PRJNA694054
 
 echo "Step2:Extract fastq Files"
 
@@ -73,4 +73,4 @@ done
 fi
 echo "Step8:Calculating counts with featureCounts"
 
-featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o counts_celldensity.out -T 2 -p  ${mapped}*.bam
+featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o gene_counts.out -T 2 -p  ${mapped}*.bam
