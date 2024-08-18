@@ -1,88 +1,96 @@
-#load to libraries
-
-library(EnhancedVolcano)
-library(org.Hs.eg.db)
-library(pheatmap)
+#importing libraries
 library(DESeq2)
 library(ggplot2)
 library(tidyverse)
+library(EnhancedVolcano)
+library(org.Hs.eg.db)
+library(pheatmap)
 
 #load to counts data
-counts <- read.csv("counts_celldensity.csv", header = T, row.names = 1)
+counts <- read.csv("gene_counts.csv", header = T, row.names = 1)
 
 #create to col data
-col_data <- data.frame(condition=c("high", "high", "low", "low"))
-row.names(col_data) <- colnames(counts)
+colData <- data.frame(condition=c("control", "control", "control", "knockout", "knockout", "knockout"))
+rownames(colData) <- colnames(counts)
 
 #check rownames equal to colnames
-all(colnames(counts) == rownames(col_data))
+all(rownames(colData) == colnames(counts))
 
 #construct DESeqDataSet
 dds <- DESeqDataSetFromMatrix(countData = counts,
-                              colData = col_data,
+                              colData = colData,
                               design = ~condition)
 
 #filtering to low counts
-kepp <- rowSums(counts(dds)) >=10
-dds <- dds[kepp,]
+keep <- rowSums(counts(dds)) >= 10
+dds <- dds[keep,]
+
+#setting reference level
+dds$condition <- relevel(dds$condition, ref = "control")
 
 #run DESeq2
 dds <- DESeq(dds)
 
 #retrival to results
-res <- results(dds, contrast = c("condition", "high", "low"))
+res <- results(dds)
 
-#retrival to normalized counts
+#retrival to normalizedcounts
 normalized_counts <- counts(dds, normalized = T)
 
-#retrival gene symbol
-
+#retrival uniprot id and  gene symbol
 keytypes(org.Hs.eg.db)
 columns(org.Hs.eg.db)
+
+res$uniprot_id <- mapIds(org.Hs.eg.db,
+                         keys = rownames(res),
+                         keytype = "ENSEMBL",
+                         column = "UNIPROT")
 
 res$symbol <- mapIds(org.Hs.eg.db,
                      keys = rownames(res),
                      keytype = "ENSEMBL",
                      column = "SYMBOL")
 
-#pca plot
-vstdata <- vst(dds,
-               blind = F)
-pca_graph <- plotPCA(vstdata,
-                      intgroup="condition")
+#convert res to dataframe and merge res and normalized counts
+res <- as.data.frame(res)
+res_and_normalized <- merge(res, normalized_counts, by=0)
 
-#plotMA
-plotMA(res, alpha=0.05)
-
-#plotMA with ggplot
-res$significant <- ifelse(res$pvalue <= 0.05, "yes", "no")
-ggplot(res, aes(x=log(baseMean), y=log2FoldChange, color= significant))+
-  geom_point()
+#plotMA graph
+plotMA <- plotMA(dds, alpha=0.05)
 
 #volcano plot
-EnhancedVolcano(res, x="log2FoldChange", y="padj", lab = res$symbol)
+enhancedvolcano <- EnhancedVolcano(res_and_normalized,
+                                   x="log2FoldChange",
+                                   y="padj",
+                                   lab = res_and_normalized$symbol )
+
+#retrieving significant normalized counts
+signi_normalized_counts <- res_and_normalized %>% 
+  filter(res$padj <= 0.05 & abs(res$log2FoldChange) > 1) %>% 
+  dplyr::select(10:15)
 
 #heatmap with significant normalized counts
-signi <- as.data.frame(res) %>% 
-  subset(subset=res$pvalue <= 0.05)
-
-all_signi <- merge(normalized_counts, signi, by=0)
-counts_signi <- all_signi[,2:5]
-row.names(counts_signi) <- all_signi$Row.names
-
-pheatmap(log2(counts_signi + 1), 
+heatmap_normalized <- pheatmap(log2(signi_normalized_counts + 1), 
          scale = "row", 
          show_rownames = F, 
          treeheight_row = 0,
          treeheight_col = 0)
 
-#heatmap with top 20 genes 
-top20 <- head(all_signi[order(all_signi$pvalue),],20)
-top20_counts <- top20[ ,2:5]
-row.names(top20_counts) <- top20$symbol
-head(top20_counts)
-pheatmap(log2(top20_counts + 1))
+#retrieving significant top20 genes
+top20_genes <- res_and_normalized %>% 
+  filter(res$padj <= 0.05 & abs(res$log2FoldChange) > 1) %>% 
+  arrange(padj) %>% 
+  dplyr::select(9:15) %>% 
+  head(20)
+  
+rownames(top20_genes) <- top20_genes$symbol
+top20_genes$symbol <- NULL
+
+#heatmap with top20 genes
+heatmap_top20genes <- pheatmap(log2(top20_genes + 1), 
+         scale = "row")
 
 #save the results
-write.csv(res, "deseq_cell_density.csv")
+write.csv(res, "deseq.csv")
 write.csv(normalized_counts, "normalized_counts.csv")
+write.csv(res_and_normalized, "res_and_normalized.csv")
