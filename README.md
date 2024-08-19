@@ -45,9 +45,9 @@ sudo apt-get install subread
 ```
 Ensure you have R installed along with the required packages:
 ```R
-install.packages(c("tidyverse", "ggplot2"))
+install.packages(c("tidyverse", "ggplot2", "pheatmap"))
 install.packages("BiocManager")
-BiocManager::install(c("DESeq2", "pheatmap", "EnhancedVolcano", "org.Hs.eg.db"))
+BiocManager::install(c("DESeq2", "clusterProfiler", "EnhancedVolcano", "org.Hs.eg.db"))
 ```
 ### Installation
 Clone the repository to your local machine:
