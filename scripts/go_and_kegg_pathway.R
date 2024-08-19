@@ -11,6 +11,7 @@ significant_genes <- res %>%
   filter(padj <= 0.05 & abs(log2FoldChange) > 1)
 
 #getting ensembl ids
+#ontology(ont) can be changed, "MF", "BP, and "CC" can be entered.
 genelist <- rownames(significant_genes)
 #enrichment gene ontology analysis
 ego <- enrichGO(gene = genelist,
@@ -18,6 +19,7 @@ ego <- enrichGO(gene = genelist,
                 keyType = "ENSEMBL",
                 ont = "BP",
                 readable = T)
+
 #plotting ego
 barplot(ego)
 
