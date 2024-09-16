@@ -67,4 +67,4 @@ cd RNAseq-analysis
 Contributions are welcome! Feel free to fork this repository and submit pull requests. For major changes, please open an issue first to discuss your proposed changes.
 
 ### Contact
-If you have any questions or suggestions please feel free to contact me (tarik.kirliogllu@gmail.com).
+If you have any questions or suggestions please feel free to contact me.
