@@ -4,7 +4,7 @@
 Welcome to the RNAseq Analysis repository! This project is dedicated to the comprehensive analysis of RNA sequencing data. Below, you'll find all the necessary information to understand, install, and utilize the scripts and data provided.
 
 ## Overview
-RNA sequencing (RNAseq) is a powerful technique for profiling gene expression. This project includes a complete pipeline for processing RNAseq data, from quality control to differential expression analysis.
+RNA sequencing (RNAseq) is a powerful technique for profiling gene expression. This project includes a complete pipeline for processing RNAseq data, from quality control to differential expression analysis.The dataset used in this project is RNAseq data from [GSE165308](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE165308), sourced from the NCBI Gene Expression Omnibus (GEO) database. The dataset includes a total of 6 samples, representing both GFI1 knockout and control conditions. All raw reads were processed using quality control tools such as FastQC, and alignment was performed using STAR, followed by gene quantification using featureCounts.
 
 ## Getting Started
 ### Prerequisites
