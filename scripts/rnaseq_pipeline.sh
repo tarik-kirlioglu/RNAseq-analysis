@@ -54,7 +54,7 @@ STAR --runMode genomeGenerate \
 	 --genomeDir ${genome_index} \
 	 --genomeFastaFiles Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 	 --sjdbGTFfile Homo_sapiens.GRCh38.112.gtf \
-	 --runThreadN 2
+	 --runThreadN 6
 
 echo "Step7:STAR Mapping"
 
@@ -73,4 +73,4 @@ done
 fi
 echo "Step8:Calculating counts with featureCounts"
 
-featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o gene_counts.out -T 2 -p  ${mapped}*.bam
+featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o gene_counts.out -T 6 -p  ${mapped}*.bam
