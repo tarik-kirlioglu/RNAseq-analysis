@@ -62,7 +62,7 @@ for infile in ${trimmed}*_1.trim.fastq
 do
    base=$(basename ${infile} _1.trim.fastq)
    STAR --genomeDir ${genome_index} \
-	--runThreadN 2 \
+	--runThreadN 6 \
 	--readFilesIn ${infile} ${trimmed}${base}_2.trim.fastq \
 	--outFileNamePrefix ${mapped}${base} \
 	--outSAMtype BAM SortedByCoordinate \
