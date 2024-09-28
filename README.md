@@ -57,8 +57,8 @@ cd RNAseq-analysis
 ```
 ## Analysis Workflow
 1. **Prefetch Datasets**: Downloading datasets by sra-toolkit.
-2. **Trimming**: Trimming and cleaning sequencing reads with Trimmomatic
-3. **Quality Control**: Using tools like FastQC to ensure data quality.
+2. **Quality Control**: Using tools like FastQC to ensure data quality.
+3. **Trimming**: Trimming and cleaning sequencing reads with Trimmomatic
 4. **Alignment**: Mapping reads to a reference genome using STAR.
 5. **Quantification**: Counting reads with featureCounts.
 6. **Statistical Analysis**: Analyzing gene expression with DESeq2.
