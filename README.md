@@ -8,29 +8,29 @@ RNA sequencing (RNAseq) is a powerful technique for profiling gene expression. T
 
 ## Getting Started
 ### Prerequisites
-### FastQC
+### [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 FastQC is used for quality control of raw sequencing data. You can download and install FastQC from here.
 
 ```bash
 sudo apt-get install fastqc
 ```
-### MultiQC
+### [MultiQC](https://github.com/MultiQC/MultiQC)
 MultiQC aggregates its results into a single report.You can download Trimmomatic from here.
 ```bash
 sudo apt-get install multiqc
 ```
-### Trimmomatic
+### [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic)
 Trimmomatic is used for trimming and cleaning sequencing reads. You can download Trimmomatic from here.
 ```bash
 sudo apt-get install trimmomatic
 ```
-### SRA Toolkit
+### [SRA Toolkit](https://github.com/ncbi/sra-tools)
 SRA Toolkit is used for accessing data from the NCBI Sequence Read Archive (SRA). You can download and install SRA Toolkit from here.
 
 ```bash
 sudo apt-get install sra-toolkit
 ```
-### STAR
+### [STAR](https://github.com/alexdobin/STAR)
 STAR is used for aligning RNAseq reads to a reference genome. You can download and install STAR from here.
 
 ```bash
@@ -38,7 +38,7 @@ git clone https://github.com/alexdobin/STAR.git
 cd STAR/source
 make
 ```
-### featureCounts
+### [featureCounts](https://subread.sourceforge.net/featureCounts.html)
 featureCounts is used for quantifying the number of reads mapped to genomic features. It is part of the Subread package, which can be downloaded and installed from here.
 ```bash
 sudo apt-get install subread
