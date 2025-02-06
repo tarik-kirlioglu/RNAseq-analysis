@@ -13,6 +13,7 @@ significant_genes <- res %>%
 #getting ensembl ids
 #ontology(ont) can be changed, "MF", "BP, and "CC" can be entered.
 genelist <- rownames(significant_genes)
+
 #enrichment gene ontology analysis
 ego <- enrichGO(gene = genelist,
                 OrgDb = "org.Hs.eg.db",
