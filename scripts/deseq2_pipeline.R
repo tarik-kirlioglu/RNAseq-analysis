@@ -62,7 +62,7 @@ plotMA <- plotMA(dds, alpha=0.05)
 enhancedvolcano <- EnhancedVolcano(res_and_normalized,
                                    x="log2FoldChange",
                                    y="padj",
-                                   lab = res_and_normalized$symbol )
+                                   lab = res_and_normalized$symbol)
 
 #retrieving significant normalized counts
 signi_normalized_counts <- res_and_normalized %>% 
