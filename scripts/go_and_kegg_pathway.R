@@ -11,10 +11,9 @@ significant_genes <- res %>%
   filter(padj <= 0.05 & abs(log2FoldChange) > 1)
 
 #getting ensembl ids
-#ontology(ont) can be changed, "MF", "BP, and "CC" can be entered.
 genelist <- rownames(significant_genes)
 
-#enrichment gene ontology analysis
+#enrichment gene ontology analysis, ontology(ont) can be changed, "MF", "BP, and "CC" can be entered.
 ego <- enrichGO(gene = genelist,
                 OrgDb = "org.Hs.eg.db",
                 keyType = "ENSEMBL",
@@ -25,7 +24,6 @@ ego <- enrichGO(gene = genelist,
 barplot(ego)
 
 #getting uniprot ids
-
 uniprotid <- significant_genes$uniprot_id
 
 #searching kegg organism code
