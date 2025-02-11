@@ -37,7 +37,7 @@ ekegg <- enrichKEGG(gene = uniprotid,
 #visualization
 browseKEGG(ekegg, pathID = "hsa04080")
 
-hsa04080 <- pathview(gene.data  = uniprotid,
+hsa04080 <- pathview(gene.data = uniprotid,
                      pathway.id = "hsa04080",
-                     species    = "hsa",
+                     species = "hsa",
                      gene.idtype = "uniprot")
