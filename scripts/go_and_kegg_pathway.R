@@ -27,7 +27,7 @@ barplot(ego)
 uniprotid <- significant_genes$uniprot_id
 
 #searching kegg organism code
-homo_sapiens <- search_kegg_organism("Homo sapiens", by="scientific_name")
+homo_sapiens <- search_kegg_organism("Homo sapiens", by = "scientific_name")
 
 #enrichment kegg pathway analysis
 ekegg <- enrichKEGG(gene = uniprotid,
