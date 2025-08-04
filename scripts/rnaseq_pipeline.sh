@@ -53,7 +53,7 @@ STAR --runMode genomeGenerate \
 	 --genomeDir ${genome_index} \
 	 --genomeFastaFiles Homo_sapiens.GRCh38.dna.primary_assembly.fa \
 	 --sjdbGTFfile Homo_sapiens.GRCh38.112.gtf \
-	 --runThreadN 6
+	 --runThreadN 8
 
 echo "Step7:STAR Mapping"
 
@@ -61,7 +61,7 @@ for infile in ${trimmed}*_1.trim.fastq
 do
    base=$(basename ${infile} _1.trim.fastq)
    STAR --genomeDir ${genome_index} \
-	--runThreadN 6 \
+	--runThreadN 8 \
 	--readFilesIn ${infile} ${trimmed}${base}_2.trim.fastq \
 	--outFileNamePrefix ${mapped}${base} \
 	--outSAMtype BAM SortedByCoordinate \
@@ -71,4 +71,4 @@ done
 
 echo "Step8:Calculating counts with featureCounts"
 
-featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o gene_counts.out -T 6 -p  ${mapped}*.bam
+featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o gene_counts.out -T 8 -p  ${mapped}*.bam
