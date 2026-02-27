@@ -56,7 +56,7 @@ res <- as.data.frame(res)
 res_and_normalized <- merge(res, normalized_counts, by=0)
 
 #plotMA graph
-plotMA <- plotMA(dds, alpha=0.05)
+plotMA(dds, alpha=0.05)
 
 #volcano plot
 enhancedvolcano <- EnhancedVolcano(res_and_normalized,
@@ -65,9 +65,10 @@ enhancedvolcano <- EnhancedVolcano(res_and_normalized,
                                    lab = res_and_normalized$symbol)
 
 #retrieving significant normalized counts
-signi_normalized_counts <- res_and_normalized %>% 
-  filter(res$padj <= 0.05 & abs(res$log2FoldChange) > 1) %>% 
-  dplyr::select(10:15)
+sample_cols <- colnames(normalized_counts)
+signi_normalized_counts <- res_and_normalized %>%
+  filter(padj <= 0.05 & abs(log2FoldChange) > 1) %>%
+  dplyr::select(all_of(sample_cols))
 
 #heatmap with significant normalized counts
 heatmap_normalized <- pheatmap(log2(signi_normalized_counts + 1), 
@@ -77,14 +78,13 @@ heatmap_normalized <- pheatmap(log2(signi_normalized_counts + 1),
          treeheight_col = 0)
 
 #retrieving significant top20 genes
-top20_genes <- res_and_normalized %>% 
-  filter(res$padj <= 0.05 & abs(res$log2FoldChange) > 1) %>% 
-  arrange(padj) %>% 
-  dplyr::select(9:15) %>% 
+top20_genes <- res_and_normalized %>%
+  filter(padj <= 0.05 & abs(log2FoldChange) > 1) %>%
+  arrange(padj) %>%
   head(20)
-  
+
 rownames(top20_genes) <- top20_genes$symbol
-top20_genes$symbol <- NULL
+top20_genes <- top20_genes %>% dplyr::select(all_of(sample_cols))
 
 #heatmap with top20 genes
 heatmap_top20genes <- pheatmap(log2(top20_genes + 1), 

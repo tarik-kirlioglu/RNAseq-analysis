@@ -9,7 +9,10 @@ prefetch -O ${reads}/ ${SRA_ACCESSION}
 
 echo "Step2:Extract fastq Files"
 
-fasterq-dump ${reads}/*.sra -O ${reads}/
+for sra in ${reads}/${SRA_ACCESSION}/*/*.sra
+do
+	fasterq-dump ${sra} -O ${reads}/
+done
 
 echo "Step3:FastQC"
 
@@ -53,4 +56,4 @@ done
 
 echo "Step7:Calculating counts with featureCounts"
 
-featureCounts -a ${GTF_FILE} -o gene_counts.out -T ${THREADS} -p ${mapped}/*.bam
+featureCounts -a ${genome_index}/${GTF_FILE} -o gene_counts.out -T ${THREADS} -p --countReadPairs ${mapped}/*.bam

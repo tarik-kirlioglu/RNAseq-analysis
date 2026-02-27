@@ -2,6 +2,7 @@
 library(clusterProfiler)
 library(pathview)
 library(enrichplot)
+library(org.Hs.eg.db)
 
 #reading results
 res <- read.csv("res_and_normalized.csv", header = T, row.names = 2)
@@ -23,7 +24,9 @@ ego <- enrichGO(gene = genelist,
 #plotting ego
 barplot(ego)
 
-#getting uniprot ids
+#getting uniprot ids with fold change values for pathview
+gene_data <- significant_genes$log2FoldChange
+names(gene_data) <- significant_genes$uniprot_id
 uniprotid <- significant_genes$uniprot_id
 
 #searching kegg organism code
@@ -37,7 +40,7 @@ ekegg <- enrichKEGG(gene = uniprotid,
 #visualization
 browseKEGG(ekegg, pathID = "hsa04080")
 
-hsa04080 <- pathview(gene.data = uniprotid,
+hsa04080 <- pathview(gene.data = gene_data,
                      pathway.id = "hsa04080",
                      species = "hsa",
                      gene.idtype = "uniprot")
