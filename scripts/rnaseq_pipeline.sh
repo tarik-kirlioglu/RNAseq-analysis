@@ -42,20 +42,7 @@ done
 
 mv *.trim.* ${trimmed}/
 
-#downloading gtf and genom fasta files
-
-wget https://ftp.ensembl.org/pub/release-112/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
-wget https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz
-
-echo "Step6:STAR Genome Index"
-
-STAR --runMode genomeGenerate \
-	 --genomeDir ${genome_index}/ \
-	 --genomeFastaFiles Homo_sapiens.GRCh38.dna.primary_assembly.fa \
-	 --sjdbGTFfile Homo_sapiens.GRCh38.112.gtf \
-	 --runThreadN 8
-
-echo "Step7:STAR Mapping"
+echo "Step6:STAR Mapping"
 
 for infile in ${trimmed}/*_1.trim.fastq
 do
@@ -69,6 +56,6 @@ do
 	--outSAMattributes Standard
 done
 
-echo "Step8:Calculating counts with featureCounts"
+echo "Step7:Calculating counts with featureCounts"
 
 featureCounts -a Homo_sapiens.GRCh38.112.gtf  -o gene_counts.out -T 8 -p  ${mapped}/*.bam
